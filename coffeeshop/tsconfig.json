@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "baseUrl": "./src", // Add this line
+    "paths": {
+      "*": ["*"] // Add this line for broad path resolution
+    },
+    "outDir": "dist"
+  },
+  "lib": ["es2015"]
+}
