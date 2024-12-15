@@ -1,0 +1,25 @@
+{
+  "name": "designpatterns-composite",
+  "version": "1.0.0",
+  "main": "index.js",
+  "private": true,
+  "description": "",
+  "license": "UNLICENSED",
+  "author": "Roberto Nerici",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "rm -rf node_modules",
+    "prebuild": "npm run clean && npm run lint",
+    "build": "tsc",
+    "xxxfmt": "eslint . --no-error-on-unmatched-pattern --fix",
+    "lint": "eslint .",
+    "all": "npm run build && node dist/index.js"
+  },
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "eslint": "^9.16.0"
+  }
+}
