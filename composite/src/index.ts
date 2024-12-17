@@ -88,6 +88,16 @@ function createCommuter() {
   inventory.add(wallet);
   inventory.add(phone);
 
+  // show we can (if we wanted!) create an inventory item without using the type (the unhandled functions make it messy)
+  const keys = {
+    getName: () => 'Keys',
+    getWeight: () => { return {grams: 50} },
+    add: () => { throw 'Unsupport Operation' },
+    remove: () => { throw 'Unsupport Operation' },
+    getChild: ()  => { throw 'Unsupport Operation' }
+  }
+  inventory.add(keys);
+
   console.log(`The commuter has:`);
   console.log(`${inventory.getName()}`);
   console.log(`In total, the commuter is carrying ${inventory.getWeight().grams / 1000} kg of stuff.\n`);
