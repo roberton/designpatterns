@@ -53,7 +53,43 @@ function createDayTripper() {
   return inventory;
 }
 
+function createAdventurer() {
+  const inventory = new Container('Inventory', { grams: 0 } );
+  const sword = new Item('Sword', { grams: 800 });
+  const shield = new Item('Shield', { grams: 1500 });
+  const armour = new Item('Leather Armour', { grams: 2500 });
+  const helmet = new Item('Iron Helm', { grams: 600 });
+  inventory.add(sword);
+  inventory.add(shield);
+  inventory.add(armour);
+  inventory.add(helmet);
+
+  const bagOfHolding = new Container('Bag of Holding', { grams: 200 } );
+  const gold = new Item('Gold', { grams: 100 } );
+  const silver = new Item('Gold', { grams: 200 } );
+  const rations = new Item('Rations', { grams: 400 } );
+  const diamonds = new Item('Diamonds', { grams: 50 } );
+  const rubies = new Item('Rubies', { grams: 100 } );
+  bagOfHolding.add(gold);
+  bagOfHolding.add(silver);
+  bagOfHolding.add(diamonds);
+  bagOfHolding.add(rubies);
+  bagOfHolding.add(rations);
+
+  const sack = new Container('Sack', { grams: 500 } );
+  const potion = new Item('Potion of Healing', { grams: 400 } );
+  const garlic = new Item('Garlic', { grams: 100 } );
+  sack.add(potion);
+  sack.add(garlic);
+  sack.add(bagOfHolding);
+
+  inventory.add(sack);
+
+  return inventory;
+}
+
 // Test them all out
 printInventory("Commuter", createCommuter());
 printInventory("Walker", createSomeoneNippingOutForAWalk());
 printInventory("Day Tripper", createDayTripper());
+printInventory("Adventurer", createAdventurer());
