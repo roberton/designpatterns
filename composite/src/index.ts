@@ -1,6 +1,10 @@
+type Weight = {
+  grams: number;
+}
+
 interface InventoryComponent {
   getName(): string,
-  getWeight(): number,
+  getWeight(): Weight,
   add(child: InventoryComponent): void,
   remove(child: InventoryComponent): void,
   getChild(index: number): InventoryComponent
@@ -9,9 +13,9 @@ interface InventoryComponent {
 // concrete item class that explicitly implements the interface
 class Item implements InventoryComponent {
   private name: string;
-  private weight: number;
+  private weight: Weight;
 
-  constructor(name: string, weight: number) {
+  constructor(name: string, weight: Weight) {
     this.name = name;
     this.weight = weight;
   }
@@ -39,10 +43,10 @@ class Item implements InventoryComponent {
 
 class Container implements InventoryComponent {
   private name: string;
-  private weight: number;
+  private weight: Weight;
   private contents: InventoryComponent[];
 
-  constructor(name: string, weight: number) {
+  constructor(name: string, weight: Weight) {
     this.name = name;
     this.weight = weight;
     this.contents = [];
@@ -50,14 +54,14 @@ class Container implements InventoryComponent {
 
   getName() {
     const contentsNames = this.contents.map(item => item.getName()).join(',\n\t');
-    return `${this.name} which contains:\n\t${contentsNames}`;
+    return `${this.name}, which contains:\n\t${contentsNames}`;
   }
 
-  getWeight() {
+  getWeight(): Weight {
     const weightOfContents = this.contents.reduce(
-      (total, child) => total + child.getWeight(),
-      0);
-    return this.weight + weightOfContents;
+      (total, child) => total + child.getWeight().grams,
+      0 );
+    return { grams: this.weight.grams + weightOfContents };
   }
 
   add(child: InventoryComponent) {
@@ -77,19 +81,38 @@ class Container implements InventoryComponent {
 
 // Create some people with different inventories
 function createCommuter() {
-  const inventory = new Container('Inventory', 0);
-  const wallet = new Item('Wallet', 0.1);
-  const phone = new Item('Phone', 0.3);
+  const inventory = new Container('Inventory', { grams: 0 });
+  const wallet = new Item('Wallet', { grams: 100} );
+  const phone = new Item('Phone', { grams: 171 });
 
   inventory.add(wallet);
   inventory.add(phone);
 
   console.log(`The commuter has:`);
   console.log(`${inventory.getName()}`);
-  console.log(`In total, the commuter is carrying ${inventory.getWeight()}kg of stuff.`);
+  console.log(`In total, the commuter is carrying ${inventory.getWeight().grams / 1000} kg of stuff.\n`);
 }
 
+function createDayTripper() {
+  const inventory = new Container('Inventory', { grams: 0 } );
+  const phone = new Item('Phone', { grams: 171 });
+  inventory.add(phone);
+
+  const backpack = new Container('Back Pack', { grams: 1000 } );
+  const wallet = new Item('Wallet', { grams: 100 } );
+  const waterBottle = new Item('Water Bottle', { grams: 600 } );
+  const sandwiches = new Item('Sandwiches', { grams: 200 } );
+  backpack.add(wallet);
+  backpack.add(waterBottle);
+  backpack.add(sandwiches);
+
+  inventory.add(backpack);
+
+  console.log(`The day tripper has:`);
+  console.log(`${inventory.getName()}`);
+  console.log(`In total, the day tripper is carrying ${inventory.getWeight().grams / 1000} kg of stuff.\n`);
+}
 
 // Test them all out
 createCommuter();
-
+createDayTripper();
