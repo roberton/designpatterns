@@ -8,7 +8,7 @@
   "author": "Roberto Nerici",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rm -rf node_modules",
+    "clean": "rm -rf dist",
     "prebuild": "npm run clean && npm run lint",
     "build": "tsc",
     "xxxfmt": "eslint . --no-error-on-unmatched-pattern --fix",

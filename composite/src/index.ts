@@ -1,83 +1,11 @@
-type Weight = {
-  grams: number;
+import { Item } from './Item';
+import { Container } from './Container';
+
+function printInventory(name: string, inventory: Container) {
+  console.log(`The ${name} has:`);
+  console.log(`${inventory.getName()}`);
+  console.log(`In total, the ${name} is carrying ${inventory.getWeight().grams / 1000} kg of stuff.\n`);
 }
-
-interface InventoryComponent {
-  getName(): string,
-  getWeight(): Weight,
-  add(child: InventoryComponent): void,
-  remove(child: InventoryComponent): void,
-  getChild(index: number): InventoryComponent
-}
-
-// concrete item class that explicitly implements the interface
-class Item implements InventoryComponent {
-  private name: string;
-  private weight: Weight;
-
-  constructor(name: string, weight: Weight) {
-    this.name = name;
-    this.weight = weight;
-  }
-
-  getName() {
-    return this.name;
-  }
-
-  getWeight() {
-    return this.weight;
-  }
-
-  add() {
-    throw "Unsupport Operation";
-  }
-
-  remove() {
-    throw "Unsupport Operation";
-  }
-
-  getChild(index: number): InventoryComponent {
-    throw "Unsupport Operation";
-  }
-}
-
-class Container implements InventoryComponent {
-  private name: string;
-  private weight: Weight;
-  private contents: InventoryComponent[];
-
-  constructor(name: string, weight: Weight) {
-    this.name = name;
-    this.weight = weight;
-    this.contents = [];
-  }
-
-  getName() {
-    const contentsNames = this.contents.map(item => item.getName()).join(',\n\t');
-    return `${this.name}, which contains:\n\t${contentsNames}`;
-  }
-
-  getWeight(): Weight {
-    const weightOfContents = this.contents.reduce(
-      (total, child) => total + child.getWeight().grams,
-      0 );
-    return { grams: this.weight.grams + weightOfContents };
-  }
-
-  add(child: InventoryComponent) {
-    this.contents.push(child);
-  }
-
-  remove(child: InventoryComponent): void {
-    const indexOfChild = this.contents.indexOf(child);
-    this.contents.splice(indexOfChild, 1);
-  }
-
-  getChild(index: number): InventoryComponent {
-    return this.contents[index];
-  }
-}
-
 
 // Create some people with different inventories
 function createCommuter() {
@@ -87,6 +15,12 @@ function createCommuter() {
 
   inventory.add(wallet);
   inventory.add(phone);
+
+  return inventory;
+}
+
+function createSomeoneNippingOutForAWalk() {
+  const inventory = new Container('Inventory', { grams: 0 });
 
   // show we can (if we wanted!) create an inventory item without using the type (the unhandled functions make it messy)
   const keys = {
@@ -98,9 +32,7 @@ function createCommuter() {
   }
   inventory.add(keys);
 
-  console.log(`The commuter has:`);
-  console.log(`${inventory.getName()}`);
-  console.log(`In total, the commuter is carrying ${inventory.getWeight().grams / 1000} kg of stuff.\n`);
+  return inventory;
 }
 
 function createDayTripper() {
@@ -118,11 +50,10 @@ function createDayTripper() {
 
   inventory.add(backpack);
 
-  console.log(`The day tripper has:`);
-  console.log(`${inventory.getName()}`);
-  console.log(`In total, the day tripper is carrying ${inventory.getWeight().grams / 1000} kg of stuff.\n`);
+  return inventory;
 }
 
 // Test them all out
-createCommuter();
-createDayTripper();
+printInventory("Commuter", createCommuter());
+printInventory("Walker", createSomeoneNippingOutForAWalk());
+printInventory("Day Tripper", createDayTripper());
